@@ -1,4 +1,4 @@
-// ========== Присваивание ========== //
+// ========== Задачи - присваивание ========== //
 
 //1) Записи в коротком виде
 let a = b = c = 5,
@@ -16,7 +16,7 @@ let sourceNumb = 34;
 
 console.log(`Исходное число: ${sourceNumb}, в квадрате: ${sourceNumb *= sourceNumb}`);
 
-// ========== Арифметические операторы ========== //
+// ========== Задачи - арифметические операторы ========== //
 
 //1) Сравнить записи
 let a1 = a2 = 5;
@@ -27,25 +27,25 @@ console.log(`На следующей строке: a1 = ${a1}, a2 = ${a2}`);
 //2) Узнаем четное или не четное с помощью оператора %
 sourceNumb = 9;
 
-if (sourceNumb % 2 == 1) 
+if (sourceNumb % 2) 
     console.log(`Исходное число: ${sourceNumb} и оно не четное`);
 else 
     console.log(`Исходное число: ${sourceNumb} и оно четное`);
 
-// ========== Условные операторы ========== //
+// ========== Задачи - условные операторы ========== //
 
 //1)
 let overflow = 'hidden';
 
-if (overflow == 'hidden') overflow = 'visible';
+if (overflow === 'hidden') overflow = 'visible';
 else overflow = 'hidden';
 
-overflow = overflow == 'hidden' ? 'visible' : 'hidden';
+overflow = overflow === 'hidden' ? 'visible' : 'hidden';
 
 //2)
 let degrees1 = 0;
 
-if (degrees1 == 0) degrees1 = 1;
+if (degrees1 === 0) degrees1 = 1;
 else if (degrees1 < 0) degrees1 = 'меньше нуля';
 else degrees1 *= 10;
 
@@ -54,12 +54,12 @@ console.log(`В холодильнике градусов: ${degrees1}`);
 // Тернарный вариант
 let degrees2 = -1;
 
-degrees2 = degrees2 == 0 ? 1 : 
+degrees2 = degrees2 === 0 ? 1 : 
             degrees2 < 0 ? 'меньше нуля' : degrees2 *= 10;
 
 console.log(`В морозильнике градусов: ${degrees2}`);
 
-// ========== Switch Case ========== //
+// ========== Задачи - switch case ========== //
 
 let display = 'none';
 
@@ -78,7 +78,7 @@ function CheckDisplay(inputParam) {
     }
 };
 
-// ========== Преобразование типов ========== //
+// ========== Задачи - преобразование типов ========== //
 //1)
 let value;
 

@@ -10,7 +10,7 @@ let userInfo;
 
 //3) Результат - string 2
 
-// ========== Задачи let и const ========== //
+// ========== Задачи - let и const ========== //
 
 //1) Результат - test is not defined
 
@@ -18,7 +18,7 @@ let userInfo;
 
 //3) Результат - Identifier 'Somevariable' has already been declared
 
-// ========== Задачи string ========== //
+// ========== Задачи - string ========== //
 
 let str = 'some test string';
 console.log(`Исходный текст: ${str}`);
@@ -50,7 +50,7 @@ let a = 20,
 
 console.log(`Док, в какой год мы попали ? - В ${a + '' + b}, Марти.`);
 
-// ========== Задачи int ========== //
+// ========== Задачи - int ========== //
 
 //1)
 console.log(`Получить число Пи из Math и округлить его до 2 знаков после точки: ${Math.PI.toFixed(2)}`);
@@ -74,7 +74,7 @@ console.log(`2 Вариант) Результат вычисления 0.6 + 0.7
 let myMoney = '100$';
 console.log(`Получить число из строки ${myMoney} = ${parseInt(myMoney)}`);
 
-// ========== Задачи objects ========== //
+// ========== Задачи - objects ========== //
 
 //1)
 let marketItem = {

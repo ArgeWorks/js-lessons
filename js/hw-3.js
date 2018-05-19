@@ -64,6 +64,6 @@ let minNumb = 1,
 console.log(`Найти все нечетные числа от ${minNumb} до ${maxNumb}:`);
 
 for (let i = minNumb; i <= maxNumb; i++) {
-    if (i % 2 === 1) console.log(i);
+    if (i % 2) console.log(i);
 }
 
