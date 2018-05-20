@@ -1,12 +1,12 @@
 // ========== Задачи - функции ========== //
 
 //1)
-function multiply() {
-    if (arguments.length < 2) return new Error('to perform multiply, need more than 1 number');
+function multiply(...args) {
+    if (args.length < 2) return new Error('to perform multiply, need more than 1 number');
     let summ = 1;
   
-    for (let i = 0; i < arguments.length; i++) {
-        if (!isNaN(arguments[i]) && arguments[i]) summ *= arguments[i];
+    for (let i = 0; i < args.length; i++) {
+        if (!isNaN(args[i]) && args[i]) summ *= args[i];
         else return new Error('all arguments must be a number and more than 0');
     }
 
