@@ -88,9 +88,14 @@ function editTask(id, text) {
     if (isNaN(id)) return new Error('id must be a number');
     if (typeof text !== 'string') return new Error('text is not a string');
 
+    let todo;
+
     for (let task of todos) {
         if (task.id === id) {
             task.text = text;
+            todo = task;
         }
     }
+
+    return todo || 'task not found';
 }
