@@ -104,6 +104,6 @@ value = null && 0 && 25; // value = null, null = false, 0 = false, 25 = true.
 '3' + 2 - 1 // = '31'
 true + 2 // = 3
 +'10' + 1 // = 11
-undefined + 2 // = Nan
+undefined + 2 // = NaN
 null + 5 // = 5
 true + undefined // = NaN

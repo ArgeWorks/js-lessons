@@ -6,20 +6,21 @@ function multiply() {
     let summ = 1;
   
     for (let i = 0; i < arguments.length; i++) {
-        if (!isNaN(arguments[i])) summ *= arguments[i];
-        else return new Error('all arguments must be a number');
+        if (!isNaN(arguments[i]) && arguments[i]) summ *= arguments[i];
+        else return new Error('all arguments must be a number and more than 0');
     }
 
     return summ;
 }
 
 //3)
-function reverseString(str) {
-    if (!str) return new Error('string must not be empty');
+function reverseString(text) {
+    if (!text) return new Error('argument must not be empty');
+    if (typeof str !== 'string') return new Error('argument must be a string');
     let reverseText = '';
 
-    for (let i = str.length - 1; i >= 0; i--) {
-        reverseText += str[i];
+    for (let i = text.length - 1; i >= 0; i--) {
+        reverseText += text[i];
     }
 
     return reverseText;
@@ -27,7 +28,8 @@ function reverseString(str) {
 
 //4)
 function getCodeStringFromText(str) {
-    if (!str) return new Error('string must not be empty');
+    if (!str) return new Error('argument must not be empty');
+    if (typeof str !== 'string') return new Error('argument must be a string');
     let formatStr = '';
 
     for (let i = 0; i < str.length; i++) {
@@ -50,8 +52,9 @@ let todos = [
 ];
 
 function addTask(text) {
-    if (typeof text !== 'string') return new Error('text is not a string');
-    if (!text.length) return new Error('text empty');
+    if (!text) return new Error('text argument required'); // Проверка переменной text на значение undefined
+    if (typeof text !== 'string') return new Error('text argument is not a string');
+    if (!text.length) return new Error('text argument empty');
 
     // Create new task obj
     const newTask = {
@@ -66,8 +69,8 @@ function addTask(text) {
 }
 
 function deleteTask(id) {
-    if (id !== 0 && !id) return new Error('id required');
-    if (isNaN(id)) return new Error('id must be a number');
+    if (id !== 0 && !id) return new Error('id argument required');
+    if (isNaN(id)) return new Error('id argument must be a number');
     id = Number(id);
 
     let todo;
@@ -84,9 +87,10 @@ function deleteTask(id) {
 }
 
 function editTask(id, text) {
-    if (id !== 0 && !id && !text.length) return new Error('id and text required');
-    if (isNaN(id)) return new Error('id must be a number');
-    if (typeof text !== 'string') return new Error('text is not a string');
+    if (id !== 0 && !id && !text) return new Error('id and text arguments required'); // Проверка переменных id и text на значение undefined
+    if (isNaN(id)) return new Error('id argument must be a number'); // Проверка переменной id на значение NaN
+    if (typeof text !== 'string') return new Error('text argument is not a string'); // Проверка переменной text на тип string
+    if (!text.length) return new Error('text argument empty'); // Проверка переменной text на пустую строку.
 
     let todo;
 
