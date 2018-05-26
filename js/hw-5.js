@@ -148,6 +148,9 @@ function filtrateProducts(arr, min, max, sortType) {
     });
 }
 
+//Вариант function expression:
+//let filtrateProducts = (arr, min, max) => arr.filter(item => item.price >= min && item.price <= max).sort((prev, next) => prev.price - next.price);
+
 console.log(filtrateProducts(productsArr, 5, 19, 'MinToMax'));
 
 // ========== Задачи - массивы ES5 ========== //
