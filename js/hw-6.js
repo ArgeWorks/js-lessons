@@ -51,7 +51,7 @@ function deleteTask(id) {
             tasks.splice(i, 1);
     });
     // Delete task at HTML markup
-    for (let task of document.getElementsByClassName('list-group-item')) {
+    for (let task of document.querySelectorAll('.list-group-item')) {
         if (task.dataset.id === String(id)) ul.removeChild(task);
     }
     // Show info message
