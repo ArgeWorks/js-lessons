@@ -38,7 +38,7 @@ function addTask(text) {
     // Add object to tasks array
     tasks.unshift(newTask);
     // Add li to HTML markup
-    ul.insertAdjacentElement('afterbegin', listTemplate(newTask))
+    ul.insertAdjacentElement('afterbegin', createElement('li', ['list-group-item'], newTask.text, newTask.id))
     // Show info message
     messageInfo('Task successfully added!');
 }
