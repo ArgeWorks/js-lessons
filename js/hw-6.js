@@ -62,11 +62,12 @@ function deleteTask(id) {
 function messageInfo(text) {
     // Get alert element
     const divAlert = document.querySelector('.alert');
-    // Create alert element and add text existing alert
+    
     if (divAlert === null) {
+        // Create alert element and paste at HTML markup
         document.querySelector('.container').insertAdjacentElement('afterbegin', createElement('div', ['alert', 'alert-info'], text));
     } else {
-        // Or add message to existing elert
+        // Or add text to existing elert
         divAlert.textContent = text;
     }
 }
