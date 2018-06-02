@@ -11,6 +11,22 @@ let tasks = [
 ];
 
 const ul = document.querySelector('.list-group');
+const clearBtn = document.querySelector('.clear-btn');
+
+// Events
+clearBtn.addEventListener('click', clearList);
+
+// Clear list
+function clearList(e) {
+    //Cancel default action
+    e.preventDefault();
+    //Clear tasks rray
+    tasks = [];
+    //Clear HTML markup
+    ul.innerHTML = '';
+    // Show info message
+    messageInfo('Tasks list cleared!');
+}
 
 // Add all tasks to HTML markup
 tasks.forEach(task => ul.insertAdjacentElement('afterbegin', createElement('li', ['list-group-item'], task.text, task.id)));
@@ -24,7 +40,7 @@ function createElement(tag, classes, text, id) {
         element.classList.add(elementClass);
     }
     // Set id
-    if (id !== undefined) element.setAttribute('data-id', id);
+    if (id) element.setAttribute('data-id', id);
     // Paste text to element
     element.textContent = text;
     // Return element
@@ -52,7 +68,7 @@ function deleteTask(id) {
     });
     // Delete task at HTML markup
     for (let task of document.querySelectorAll('.list-group-item')) {
-        if (task.dataset.id === String(id)) ul.removeChild(task);
+        if (task.dataset.id === String(id)) task.remove();
     }
     // Show info message
     messageInfo('Task successfully removed!');
@@ -63,7 +79,7 @@ function messageInfo(text) {
     // Get alert element
     const divAlert = document.querySelector('.alert');
     // Check alert exists
-    if (divAlert === null) {
+    if (!divAlert) {
         // Create alert element and paste at HTML markup
         document.querySelector('.container').insertAdjacentElement('afterbegin', createElement('div', ['alert', 'alert-info'], text));
     } else {
