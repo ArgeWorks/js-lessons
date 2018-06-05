@@ -83,18 +83,13 @@ function deleteTask(e) {
     // Check delete-task-btn class
     if (e.target.classList.contains('delete-task-btn')) {
         // Get parent
-        let parent = e.target.parentElement;
-        // Compare id's
-        tasks.forEach((task, i) => {
-            if (task.id === String(parent.dataset.id)) {
-                // Delete task on tasks array
-                tasks.splice(i, 1);
-                // Delete task at HTML markup
-                parent.remove();
-                // Show info message
-                messageInfo('Task successfully removed!');
-            }
-        });
+        const parent = e.target.parentElement;
+        // Delete task on tasks array
+        tasks = tasks.filter(task => task.id !== String(parent.dataset.id));
+        // Delete task at HTML markup
+        parent.remove();
+        // Show info message
+        messageInfo('Task successfully removed!');
     }
 }
 
