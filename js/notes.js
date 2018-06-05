@@ -825,7 +825,7 @@ div.onclick = function() { console.log('Hello!') };
 div.addEventListener('click', myFunc);
 // Или удаляем слушатель
 div.removeEventListener('click', myFunc);
-// Обработчик события
+// Обработчик события, e - это объект события.
 function myFunc(e) {
     e.preventDefault();           // Отменяем стандартные действия объекта.
     let value = e.target.value;   // Получить значение элемента (к примеру инпута).
