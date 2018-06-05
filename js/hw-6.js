@@ -62,14 +62,16 @@ function addTask(e) {
     e.preventDefault();
     // Get text from input
     let text = input.value;
-    // Clear input
-    input.value = '';
     // Create task object
     const newTask = {text, id: String(tasks.length + 1)};
     // Add object to tasks array
     tasks.unshift(newTask);
     // Add li to HTML markup
     ul.insertAdjacentElement('afterbegin', createElement('li', ['list-group-item'], newTask.text, newTask.id));
+    // Clear input
+    input.value = '';
+    // Disable add button
+    addBtn.disabled = true;
     // Show info message
     messageInfo('Task successfully added!');
 }
