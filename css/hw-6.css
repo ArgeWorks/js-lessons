@@ -1,0 +1,11 @@
+.card .list-group-item {
+    display: flex;
+    align-items: center;
+}
+.card .list-group-item .delete-task-btn {
+    margin-left: auto;
+    cursor: pointer;
+}
+.card .list-group-item .delete-task-btn:hover {
+    color: #0062cc;
+}

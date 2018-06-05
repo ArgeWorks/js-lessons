@@ -691,6 +691,28 @@ section = document.querySelectorAll('#section');          // Получить в
 const links = document.links;    // Получить все ссылки на странице.
 const forms = document.forms;    // Получить все формы на странице.
 
+// Получить определенную форму
+const myForm = forms.myForm;    // Получить форму у которой атрибут name равен myForm.
+// или
+const myForm = forms[myForm];
+
+// Получить все элементы формы (инпуты, чекбоксы и т.д)
+const myFormElements = myForm.elements;
+
+// Получить определенный элемент формы
+// Если у элементов форм есть id, то можно осуществлять доступ к ним по содержимому id: myFormElements.thisIsIdValue или myFormElements[thisIsIdValue],
+// если id нет, тогда можно осуществлять доступ по номеру: myFormElements[1]
+const myFormInput = myFormElements.myInput;  // Получить инпут у которого есть атрибут id равный myInput.
+
+// Получить значение input-а
+const myFormInputValue = myFormInput.value;  // Получаем весь текст который есть в инпуте.
+// Так же можно получать значение инпута чарез собитие, см. раздел СОБЫТИЯ.
+
+// Отключить инпут
+myFormInput.disabled = true;  // Что-бы включить нужно присвоить false
+
+//---------
+
 // Проверка селектора
 // <div class="card mb-3 list-card">
 // const card = document.querySelector('.card')
@@ -788,7 +810,9 @@ ul.removeChild(li);    // Удаляет li внутри ul
 div.contains(span);     // Результат: true или false
 
 
-//======================== СОБЫТИЯ ========================//
+
+
+//==================================================== СОБЫТИЯ ====================================================//
 
 // Вешаем слушатель собития. 1-й Вариант (Не удобный)
 div.onclick = function() { console.log('Hello!') };
@@ -799,9 +823,10 @@ div.onclick = function() { console.log('Hello!') };
 // 2-й обработчик события - функция, которя принимает один параметр, через который передается объект события(В нем находятся данные: где произошло событие, координаты, тип события и т.д). 
 // 3-й ...
 div.addEventListener('click', myFunc);
-//Или удаляем слушатель
+// Или удаляем слушатель
 div.removeEventListener('click', myFunc);
-//Обработчик события
+// Обработчик события
 function myFunc(e) {
-    e.preventDefault();  // Отменяем стандартные действия объекта.
+    e.preventDefault();           // Отменяем стандартные действия объекта.
+    let value = e.target.value;   // Получить значение элемента (к примеру инпута).
 }
