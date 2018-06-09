@@ -42,6 +42,18 @@ function test(id) {
     else console.log('else ' + id);
 }
 
+
+//////////////////////////////////////////////////////////// РАЗНЫЕ ФИШКИ :) ////////////////////////////////////////////////////////////
+
+// СДЕЛАТЬ ПЕРВУЮ БУКВУ СТРОКИ ЗАГЛАВНОЙ
+someStr.charAt(0).toUpperCase() + someStr.substr(1);
+
+// ПОЛУЧЕНИЕ КЛЮЧЕЙ И ЗНАЧЕНИЙ С ОБЪЕКТОВ, У КОТОРЫХ КЛЮЧИ ЯВЛЯЮТСЯ СТРОКАМИ
+let obj = { 'Лето': 'Одень футболку и шорты' };
+Object.keys(obj)     // Получаем ключ: 'Лето'
+Object.values(obj)   // Получаем значение: 'Одень футболку и шорты'
+
+
 //////////////////////////////////////////////////////////// ПРЕОБРАЗОВАНИЕ ТИПОВ ДАННЫХ ////////////////////////////////////////////////////////////
 
 //  |Оригинальное значение|        |Преобразовано в Number|        |Преобразовано в String|        |Преобразовано в Boolean|
@@ -122,7 +134,7 @@ Number(undefined)  // NaN
 + null       // 0
 + undefined  // NaN
 
-//С помощью функции parseInt()
+//С помощью функции parseInt(), вторым аргументом указывается система исчисления, 10 - десятичная.
 parseInt("test", 10)     // NaN
 parseInt(true, 10)       // NaN
 parseInt(null, 10)       // NaN
@@ -864,8 +876,130 @@ div.addEventListener('click', myFunc);
 // Или удаляем слушатель
 div.removeEventListener('click', myFunc);  //Обратим внимание – если функцию не сохранить где-либо, а просто передать в addEventListener, то снять обработчик будет невозможно.
 // Обработчик события, e - это объект события.
+/** @param {Event} e **/
 function myFunc(e) {
     e.preventDefault();           // Отменяем стандартные действия объекта.
     let value = e.target.value;   // Получить значение элемента (к примеру инпута).
 }
+
+//==================================================== THIS - ОБЪЕКТ КОНТЕКСТА ====================================================//
+
+// this - это ссылка на то окружение, в котором запущена (вызвана) функия.
+// this всегда некоторый объект (или null)
+// В строгом режиме работы функции ('use strict') при запуске функции в глобальном окружении this равен undefined.
+
+// ФУНКЦИИ ЗАПУЩЕННЫЕ В ГЛОБАЛЬНОМ ПРОСТРАНСТВЕ
+getPrice();  // this будет равен глобальному объекту window
+
+// THIS
+function getPrice() { return this.price; };
+const object = { name: 'Intel', price: 200, getPrice };
+object.getPrice();
+
+// ПРИМЕРЫ THIS:
+// Изменяем значение в объекте:
+function changePrice(value) {
+    this.price = value;
+    return this;
+}
+
+const product = {
+    price: 100,
+    changePrice: changePrice
+}
+
+product.changePrice(200);
+
+//---------
+
+
+// ОДДАЛЖИВАНИЕ МЕТОДА
+const object1 = { 
+    price: 200, 
+    getPrice: function () { return this.price } 
+};
+const object2 = { price: 300 };
+
+object2.getPrice = object1.getPrice; // теперь у object2 так же есть метод getPrice
+object2.getPrice(); // Вернет price объекта object2.
+//---------
+
+// ПРИНУДИТЕЛЬНАЯ ПЕРЕДАЧА КОНТЕКСТА В THIS С ПОМОЩЬЮ .CALL()
+// someFunc.call(context, arg1, arg2...)
+const product = { price: 200 };
+
+// Метод .call() вызывает вункцию с указанным значением this.
+function getPrice() { return this.price; };
+getPrice.call(product); // Передаем в функцию getPrice объект product, который внутри функции будет доступен в this.
+
+// Так же метод .call() может принимать различные аргументы.
+getPriceWithDiscount.call(product, 10) // Передаем в функцию getPrice объект product, который внутри функции будет доступен в this, и вторым аргументом передаем скидку.
+
+function getPriceWithDiscount(discount) { 
+    return this.price * (100 - discount) / 100; 
+};
+
+// Так же можно принудительно передать контекст в метод объекта:
+object1.getPrice.call(object2);
+// или так
+object1.getPrice.call({ price: 150 });
+//---------
+
+// ПРИНУДИТЕЛЬНАЯ ПЕРЕДАЧА КОНТЕКСТА В THIS С ПОМОЩЬЮ .APPLY()
+// Работает точно так же как и .call, только аргументы передаются в виде массива.
+function getPriceWithDiscount(discount, currency) { 
+    return this.price * (100 - discount) / 100 + currency; 
+};
+
+getPriceWithDiscount.apply(product, [10, '$']);  // Результат: '180$'
+
+// Так же можно передать аргументы без передачи контекста multyplt.apply(null, [1, 2, 3])
+// Примеры:
+// Math.max(1, 2, 10, 5);
+Math.max.apply(null, [1, 2, 10, 5]);
+//---------
+
+// ПОТЕРЯ КОНТЕКСТА
+const object = { 
+    price: 200, 
+    getPrice: function () { return this.price } 
+};
+
+const myFunc = object.getPrice;
+myFunc.getPrice(); // Ошибка, this будет равен глобальному объекту window так как функция была запущена в глобальном окружении.
+//---------
+
+// ПРИВЯЗКА КОНТЕКСТА
+// bind привязывает навсегда.
+const object = { 
+    price: 200, 
+    getPrice: function () { return this.price } 
+};
+
+object.getPrice(); // Вернет: 200
+
+let newFunc = object.getPrice; // Передаем тело функции в новую переменную.
+newFunc(); // Вернет: undefined так вызван в глобальном окружении.
+
+let newFunc = object.getPrice.bind(object); // Передаем тело функции и контекст в виде объекта object в новую переменную.
+newFunc(); // Вернет: 200 и всегда будет возвращать 200, так как привязан к конкретному объекту.
+
+// или так
+object.getPrice = object.getPrice.bind(object);  // Делаем привязку метода в объекте к этому же объекту.
+let newFunc = object.getPrice; // Передаем тело функции в новую переменную.
+newFunc(); // Вернет: 200 так как уже была выполнена привязка.
+
+// Если попробовать вызвать .call
+newFunc.call({ price: 150 });  // Вернет все так же: 200 так как привязан к объекту object.
+
+// СОЗДАЕМ BIND ВРУЧНУЮ
+function bind(someFunc, context) {
+    return function () {
+        return someFunc.call(context);
+    };
+}
+
+function getPrice() { return this.price }
+getPrice = bind(getPrice, { price: 350 });
+getPrice(); // Вернет: 350
 

@@ -26,6 +26,7 @@ input.addEventListener('keyup', e => {
 });
 
 // Clear list function
+/** @param {Event} e **/
 function clearList(e) {
     //Cancel default action
     e.preventDefault();
@@ -57,6 +58,7 @@ function createElement(tag, classes, text, id) {
 }
 
 // Add task
+/** @param {Event} e **/
 function addTask(e) {
     //Cancel default action
     e.preventDefault();
@@ -77,6 +79,7 @@ function addTask(e) {
 }
 
 // Delete task
+/** @param {Event} e **/
 function deleteTask(e) {
     // Cancel default action
     e.preventDefault();
