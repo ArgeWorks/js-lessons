@@ -35,7 +35,7 @@ const multiply = multiplyMaker(2);
 multiply(5); // 10
 
 // Задача №5
-const stringControl = (function () {
+const StringControl = (function () {
     let newString;
 
     function createString(str) {
@@ -57,15 +57,15 @@ const stringControl = (function () {
     }
 
     return {
-        createString: createString,
-        getString: getString,
-        getStringLenght: getStringLenght,
-        reverseString: reverseString
+        createString,
+        getString,
+        getStringLenght,
+        reverseString
     }
 }());
 
 // Задача №6
-const calculator = (function () {
+const Calculator = (function () {
     let result = 0,
         prevResult;
 
@@ -129,12 +129,12 @@ const calculator = (function () {
 
     // Публичные методы
     return {
-        setFirstNumber: setFirstNumber,
-        getResult: getResult,
-        plus: plus,
-        minus: minus,
-        multiply: multiply,
-        divide: divide,
-        exponentiation: exponentiation
+        setFirstNumber,
+        getResult,
+        plus,
+        minus,
+        multiply,
+        divide,
+        exponentiation
     }
 }());
