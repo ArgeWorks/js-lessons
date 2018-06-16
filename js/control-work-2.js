@@ -1,16 +1,16 @@
 const Game = (function () {
     class Question {
-        constructor(question, answer, answers) {
+        constructor(question, answers, answer) {
             this.question = question;
-            this.answer = answer;
             this.answers = answers;
+            this.correctAnswer = answer;
         }
     }
 
     let questions = [
-        new Question('Как звали ученого из фильма «Назад в будущее» ?', 0, ['Эмметт Браун', 'Рик Санчез', 'Доктор Зло']),
-        new Question('Какую модель терминатора играл Арнольд Шварценеггер ?', 2, ['Т-1000', 'ТОК-715', 'Т-800']),
-        new Question('Как произносится заклятие левитации в «Гарри Поттере» ?', 1, ['Люмос!', 'Вингардиум Левиоса!', 'Флиппендо!!!'])
+        new Question('Как звали ученого из фильма «Назад в будущее» ?', ['Эмметт Браун', 'Рик Санчез', 'Доктор Зло'], '0'),
+        new Question('Какую модель терминатора играл Арнольд Шварценеггер ?', ['Т-1000', 'ТОК-715', 'Т-800'], '2'),
+        new Question('Как произносится заклятие левитации в «Гарри Поттере» ?', ['Люмос!', 'Вингардиум Левиоса!', 'Флиппендо!!!'], '1')
     ];
 
     let gameStarted = true,
@@ -19,12 +19,13 @@ const Game = (function () {
     // Запуск игры
     function start() {
         while (gameStarted) {
+            // Перебераем вопросы в массиве
             for (let item of questions) {
                 // Выводим вопрос и получаем ответ.
                 let result = showQuestion(item); 
 
                 // Проверяем результат.
-                if (+result === item.answer) {
+                if (result === item.correctAnswer) {
                     // Если пользователь дал правильный ответ
                     displayInfo('correct')
                 } else if (result === 'stop' || result === 'стоп' || result === null) {
@@ -79,7 +80,8 @@ const Game = (function () {
 }());
 
 // Запускаем игру
-Game.start();
+//Game.start();
+
 
 
 
