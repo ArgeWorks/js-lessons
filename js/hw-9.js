@@ -78,7 +78,7 @@ const Calculator = (function () {
 
     // Узнать результат
     function getResult() {
-        console.log('Result = ' + result);
+        console.log('Result = ' + Math.round(result * 100) / 100);
         return this;
     }
 
@@ -138,3 +138,24 @@ const Calculator = (function () {
         exponentiation
     }
 }());
+
+
+// ========== Задачи - Дата (Для себя) ========== //
+// Задача №1
+function getFirstDayOfTheYear(year) {
+    return new Date(year, 0, 1).toLocaleDateString('ru', { weekday: 'long' });
+}
+
+// Задача №2
+function getDayNameOfDate(date) {
+    return new Date(date.replace(/(\d+).(\d+).(\d+)/, '$3-$2-$1')).toLocaleDateString('ru', { weekday: 'long' });
+}
+
+// Задача №3 - Решение нашел в интернете, записал на будующее, вдруг пригодится.
+Date.prototype.getWeek = function () {
+    var onejan = new Date(this.getFullYear(), 0, 1);
+    var millisecsInDay = 86400000;
+    return Math.ceil((((this - onejan) / millisecsInDay) + onejan.getDay() + 1) / 7);
+};
+
+console.log(new Date().getWeek());

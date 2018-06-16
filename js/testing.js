@@ -30,11 +30,14 @@ charArray.reverse(); //Разворачиваем массив
 
 let newStr = charArray.join(''); //Преобразовываем массив в строку, разделителя нет.
 
-console.log(newStr);
+//console.log(newStr);
 
 //или
 
 charArray = rawStr.split('').reverse().join('');
 
-console.log(charArray);
+//console.log(charArray);
 //-------------------------
+
+
+
