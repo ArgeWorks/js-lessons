@@ -41,13 +41,15 @@ const Game = (function () {
 
             // Если набрано максимальное количество очков - объявляем победу!
             if (gamePoints === questions.length) displayInfo('win');
+
+            return 'Сыграй в меня еще! :)';
         }
     }
     
     // Вывод вопроса и получение ответа
     function showQuestion(item) {
         console.log(item.question);
-        item.answers.forEach((answer, i) => console.log(`${i} : ${answer}`));
+        item.answers.forEach((answer, i) => console.log(`${i}: ${answer}`));
         return prompt('Введите номер ответа:', '');
     }
 
