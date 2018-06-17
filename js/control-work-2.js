@@ -1,4 +1,5 @@
 const Game = (function () {
+    // Конструктор вопросов
     class Question {
         constructor(question, answers, answer) {
             this.question = question;
@@ -7,49 +8,61 @@ const Game = (function () {
         }
     }
 
-    let questions = [
+    // Массив вопросов
+    let questionsArray = [
         new Question('Как звали ученого из фильма «Назад в будущее» ?', ['Эмметт Браун', 'Рик Санчез', 'Доктор Зло'], '0'),
         new Question('Какую модель терминатора играл Арнольд Шварценеггер ?', ['Т-1000', 'ТОК-715', 'Т-800'], '2'),
         new Question('Как произносится заклятие левитации в «Гарри Поттере» ?', ['Люмос!', 'Вингардиум Левиоса!', 'Флиппендо!!!'], '1')
     ];
 
-    let gameStarted = true,
+    let gameStarted,
         gamePoints = 0;
 
     // Запуск игры
     function start() {
+        // Ставим флаг что игра запущена
+        gameStarted = true;
+
+        // Основной цикл
         while (gameStarted) {
             // Перебераем вопросы в массиве
-            for (let item of questions) {
-                // Выводим вопрос и получаем ответ.
-                let result = showQuestion(item); 
+            for (let item of questionsArray) {
+                // Выводим вопрос и получаем ответ
+                let answer = showQuestion(item); 
 
-                // Проверяем результат.
-                if (result === item.correctAnswer) {
+                // Проверяем результат
+                if (answer === item.correctAnswer) {
                     // Если пользователь дал правильный ответ
-                    displayInfo('correct')
-                } else if (result === 'stop' || result === 'стоп' || result === null) {
+                    displayInfo('correct');
+                } else if (answer === 'stop' || answer === 'стоп' || answer === null) {
                     // Если пользователь остановил игру
-                    displayInfo('stop')
+                    gameStarted = false;
+                    displayInfo('stop');
                     break;
                 }  else {
                     // Если пользователь проиграл
-                    displayInfo()
+                    displayInfo();
                     break;
                 }
             }
 
-            // Если набрано максимальное количество очков - объявляем победу!
-            if (gamePoints === questions.length) displayInfo('win');
-
-            return 'Сыграй в меня еще! :)';
+            // Если набрано максимальное количество очков - останавливаем игру иобъявляем победу!
+            if (gamePoints === questionsArray.length) {
+                gameStarted = false;
+                displayInfo('win');
+            }
         }
+
+        return 'Сыграй в меня еще! :)';
     }
     
     // Вывод вопроса и получение ответа
     function showQuestion(item) {
+        // Выводим вопрос
         console.log(item.question);
+        // Выводим варианты ответов
         item.answers.forEach((answer, i) => console.log(`${i}: ${answer}`));
+        // Возвращаем ответ
         return prompt('Введите номер ответа:', '');
     }
 
@@ -58,15 +71,13 @@ const Game = (function () {
         switch (status) {
             case 'correct':
                 console.log('И это правильный ответ!');
-                console.log(`Вы ответили правильно на ${++gamePoints} из ${questions.length} вопросов.`);
+                console.log(`Вы ответили правильно на ${++gamePoints} из ${questionsArray.length} вопросов.`);
                 break;
             case 'win':
                 console.log('Вы выиграли свой первый Миллион! Поздравляем!');
-                gameStarted = false;
                 break;
             case 'stop':
                 console.log('Игра остановленна.');
-                gameStarted = false;
                 break;
             default:
                 console.log('Не повезло! Спробуй ще!');
@@ -75,6 +86,7 @@ const Game = (function () {
         console.log('------------------------------');
     }
 
+    // Возвращаем метод для запуска игры
     return {
         start
     }
