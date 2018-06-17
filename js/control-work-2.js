@@ -41,7 +41,8 @@ const Game = (function () {
                     break;
                 }  else {
                     // Если пользователь проиграл
-                    displayInfo();
+                    gamePoints = 0;
+                    displayInfo('game over');
                     break;
                 }
             }
@@ -79,8 +80,11 @@ const Game = (function () {
             case 'stop':
                 console.log('Игра остановленна.');
                 break;
-            default:
+            case 'game over':
                 console.log('Не повезло! Спробуй ще!');
+                break;
+            default:
+                console.log('Что-то пошло не так...');
                 break;
         }
         console.log('------------------------------');
