@@ -10,7 +10,7 @@ button.addEventListener('mouseover', e => e.target.setAttribute('style', 'backgr
 button.addEventListener('mouseout', e => e.target.removeAttribute('style'));
 
 // События: задача №3
-document.body.addEventListener('click', e => document.querySelector('#tag').innerText = e.target.tagName);
+document.addEventListener('click', e => document.querySelector('#tag').innerText = e.target.tagName);
 
 // Формы: задача №2
 let seasonsArray = [
