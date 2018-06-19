@@ -1773,6 +1773,41 @@ var Module = (function () {
 // *********************************************
 
 
+//////////////////////////////////////////////////////////// КОНСТРУКТОРЫ И КЛАССЫ ////////////////////////////////////////////////////////////
+// Конструктор - это функция, которая учавствует в построениее каких любо объектов. Любая функция вызваная с помощью оператора new превращается в конструктор.
+// Функции конструкторы принято называть с большой буквы.
+// Оператор inctanceof определяет, создан ли экземпляр данным классом:   person inctanceof User // true   |   someArr inctanceof Array // true
+
+// Функция вызваная с помощью new выполняет следующие действия:
+// 1 - Внутри функции создается пустой объект
+// 2 - Этот объект устанавливается в качестве this для функции
+// 3 - Функция запускается
+// 4 - Функция возвращает this (даже если нет return), но, если в return указать другой объект, то будет возвращен он, если же в return будет другой тип данных, то он будет проигнорирован.
+
+function User(name) {
+    this.name = name;
+    this.getName = function () {
+        return this.name;
+    }
+}
+
+let person = new User('Igor');
+person.getName(); // 'Igor'
+
+//---------
+
+function UserItems(name, items) {
+    this.name = name;
+    this.items = items;
+    this.getItems = function () {
+        for (let item of items) {
+            console.log(this.name + ' have a ' + this.item);
+        }
+    }
+}
+
+let personItems = new UserItems('Igor', ['Googles', 'Ford Mustang', 'Umbrella']);
+personItems.getItems(); // Igor have a Googles, Igor have a Ford Mustang, Igor have a Umbrella.
 
 
 
