@@ -24,6 +24,7 @@ function SecureString(str) {
 
     // Метод для зашифровки строки
     this.encrypt = () => {
+        // Если строка уже зашифрована возвращаем ошибку
         if (isEncrypted) return new Error('String already encrypted!');
 
         secureStr = [];
@@ -37,12 +38,12 @@ function SecureString(str) {
 
     // Метод для расшифровки строки
     this.decrypt = () => {
+        // Если строка не зашифрована возвращаем ошибку
         if (!isEncrypted) return new Error('String is not encrypted!');
 
-        let tempArr = secureStr.split('.'),
-            tempStr = '';
+        let tempStr = '';
 
-        for (let char of tempArr) {
+        for (let char of secureStr.split('.')) {
             tempStr += String.fromCharCode(char);
         }
 
