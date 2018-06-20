@@ -75,6 +75,26 @@ function test(id) {
     if (typeof id !== 'number') return new Error('id is not a number');
 }
 
+// УЗНАТЬ НАИБОЛЬШЕЕ ИЛИ НАИМЕНЬШЕЕ ЧИСЛО
+Math.max(1, 2, 10, 5);
+Math.min(1, 2, 10, 5);
+Math.max.apply(null, [1, 2, 10, 5]);
+
+
+// TRY/CATCH/FINALLY RETURN STATEMENT
+function example() {
+    var returnState = false; // initialisation value
+    try {
+        returnState = true;
+    }
+    catch {
+        returnState = false;
+    }
+    finally {
+        return returnState;
+    }
+} 
+
 //////////////////////////////////////////////////////////// ПРЕОБРАЗОВАНИЕ ТИПОВ ДАННЫХ ////////////////////////////////////////////////////////////
 
 //  |Оригинальное значение|        |Преобразовано в Number|        |Преобразовано в String|        |Преобразовано в Boolean|
@@ -283,6 +303,7 @@ if (result) { console.log("True"); } else { console.log("False"); }             
 var statusCode = 115;
 if (statusCode != 0 && statusCode == 115) { console.log("True"); } else { console.log("False"); }  // True
 
+// Преобразование объектов https://learn.javascript.ru/object-conversion
 
 //////////////////////////////////////////////////////////// ЦИКЛЫ ////////////////////////////////////////////////////////////
 
@@ -427,6 +448,18 @@ sum = () => console.log(10 + 5);
 
 // что-бы вернуть объект нужно завернуть его в круглые скобки
 let obj = someValue => ({ name: someValue });
+
+// Стрелочные функции не имеют своего this, то есть следующие вызовы отработают по разному:
+const name = 'Alisa';
+const obj = {
+    name: 'John',
+    getArrowName: () => `Hello, ${this.name}`,
+    getName: function () { return `Hello, ${this.name}`; }
+};
+
+obj.getArrowName(); //"Hello, Alisa"
+obj.getName(); //"Hello, John"
+// getName() работает как надо. А при вызове getArrowName(), this будет ссылаться не на obj, а на окружающее лексическое окружение.
 
 //--------------------------
 // ПЕРЕДАЧА ФУНКЦИИ ЧЕРЕЗ АРГУМЕНТЫ ВЫЗОВА
@@ -1774,6 +1807,7 @@ var Module = (function () {
 
 
 //////////////////////////////////////////////////////////// КОНСТРУКТОРЫ И КЛАССЫ ////////////////////////////////////////////////////////////
+// ECMAScript 5(ES5)
 // Конструктор - это функция, которая учавствует в построениее каких любо объектов. Любая функция вызваная с помощью оператора new превращается в конструктор.
 // Функции конструкторы принято называть с большой буквы.
 // Оператор inctanceof определяет, создан ли экземпляр данным классом:   person inctanceof User // true   |   someArr inctanceof Array // true
@@ -1808,6 +1842,39 @@ function UserItems(name, items) {
 
 let personItems = new UserItems('Igor', ['Googles', 'Ford Mustang', 'Umbrella']);
 personItems.getItems(); // Igor have a Googles, Igor have a Ford Mustang, Igor have a Umbrella.
+
+
+
+// ECMAScript 6 (ES6)
+// Классы определяются в ECMAScript 6(ES6) следующим образом:
+
+class Point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    toString() {
+        return '(' + this.x + ', ' + this.y + ')';
+    }
+}
+
+var p = new Point(25, 8);
+p.toString() // '(25, 8)'
+
+// По факту, результатом создания такого класса будет функция:
+
+//> typeof Point
+//'function'
+
+//Однако, вы можете вызывать класс только через new:
+
+Point()
+// TypeError: Classes can’t be function-called
+
+//В отличие от функций, определения классов не поднимаются. Таким образом, класс существует только после того, как его определение было достигнуто и выполнено. Попытка создания класса до этого момента приведет к «ReferenceError»:
+
+new Foo(); // ReferenceError
+class Foo { }
 
 
 

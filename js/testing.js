@@ -1,43 +1,57 @@
 //============================================== Testing Area ==============================================//
 
-function modifyString(str, func) {
-    let result = '';
+// function modifyString(str, func) {
+//     let result = '';
 
-    for (let char of str) {
-        result += func(char);
-    }
+//     for (let char of str) {
+//         result += func(char);
+//     }
 
-    return result;
-}
+//     return result;
+// }
 
-function handlerUpperCase(char) {
-    return char.toUpperCase();
-}
+// function handlerUpperCase(char) {
+//     return char.toUpperCase();
+// }
 
-function handlerCharCode(char) {
-    return char.charCodeAt(0);
-}
+// function handlerCharCode(char) {
+//     return char.charCodeAt(0);
+// }
 
 //modifyString("Hello JavaScript!", handlerUpperCase);
 //modifyString("Hello JavaScript!", handlerCharCode);
 
 //-------------------------
 
-let rawStr = "Some string!";
+// let rawStr = "Some string!";
 
-let charArray = rawStr.split('');  //Разбиваем строку на массив, каждая буква отдельный элемент
-charArray.reverse(); //Разворачиваем массив
+// let charArray = rawStr.split('');  //Разбиваем строку на массив, каждая буква отдельный элемент
+// charArray.reverse(); //Разворачиваем массив
 
-let newStr = charArray.join(''); //Преобразовываем массив в строку, разделителя нет.
+// let newStr = charArray.join(''); //Преобразовываем массив в строку, разделителя нет.
 
 //console.log(newStr);
 
 //или
 
-charArray = rawStr.split('').reverse().join('');
+//charArray = rawStr.split('').reverse().join('');
 
 //console.log(charArray);
 //-------------------------
 
 
+var data = '{ "age": 30 }'; // данные неполны
 
+try {
+
+    var user = JSON.parse(data); // <-- выполнится без ошибок
+
+    if (!user.name) {
+        throw new Error("Данные некорректны");
+    }
+
+    //alert(user.name);
+
+} catch (error) {
+    console.log(error);
+}
