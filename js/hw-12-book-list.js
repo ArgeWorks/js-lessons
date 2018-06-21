@@ -151,10 +151,10 @@ document.forms['addBookForm'].addEventListener('submit', function (e) {
 
 // Delete book
 document.querySelector('.book-list').addEventListener('click', function (e) {
-    e.preventDefault();
-
     // Check btn-delete-book class
     if (e.target.classList.contains('btn-delete-book')) {
+        // Ask for delete
+        if (!confirm('Are you sure you want to delete this book ?')) return;
         // Create ui
         const ui = new UI();
         // Get Store
