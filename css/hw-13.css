@@ -1,0 +1,102 @@
+.m-auto {
+    margin: auto;
+}
+.d-flex {
+    display: flex;
+}
+.d-block {
+    display: block !important;
+}
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+.users-list {
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    padding-bottom: 10px;
+}
+.users-list .users-list-head {
+    background-color: #263238;
+    color: white;
+    align-items: center;
+    border-radius: 8px;
+    padding: 20px;
+}
+.users-list .users-list-title {
+    font-weight: bold;
+}
+.users-list .btn-get-users {
+    margin-left: auto;
+    border-radius: 6px;
+    color: white;
+    background-color: #8bc34a;
+    height: 32px;
+    padding: 0 15px;
+    transition: all .2s ease-out;
+}
+.users-list .btn-get-users:hover {
+    color: white;
+    background-color: #669e27;
+}
+.users-list .btn-get-users:disabled {
+    color: white;
+    background-color: #cacaca;
+}
+.users-list .info-card {
+    padding: 25px 10px 15px 10px;
+    text-align: center;
+}
+.users-list .user-card {
+    position: relative;
+    padding: 14px 10px;
+    border-radius: 4px;
+    margin: 10px;
+    transition: all .2s ease-out;
+}
+.users-list .user-card:hover {
+    box-shadow: 0px 10px 14px 0px rgba(216, 216, 216, 0.55);
+    background-color: white;
+    cursor: pointer;
+}
+.users-list .user-card .user-info {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 105%;
+    background-color: #263238;
+    border-radius: 8px;
+    padding: 20px;
+    padding-right: 70px;
+    box-shadow: 0px 10px 30px 0px rgba(0, 0, 0, 0.3);
+    color: white;
+    transition: all .2s ease-out;
+    min-width: 300px;
+    white-space: nowrap;
+}
+.users-list .user-card .user-info span {
+    display: block;
+}
+.users-list .user-card .user-info .user-full-name {
+    font-size: 20px;
+    padding-bottom: 20px;
+}
+.users-list .user-card .user-info .user-name {
+    padding-bottom: 10px;
+}
+.users-list .user-card .user-info .icon-close-info {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    color: fff;
+    transition: all .2s ease-out;
+}
+.users-list .user-card .user-info .icon-close-info:hover {
+    color: #8bc34a;
+}
+
+
