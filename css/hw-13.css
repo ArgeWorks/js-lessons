@@ -19,10 +19,11 @@
     background-color: #f7f7f7;
     border-radius: 8px;
     padding-bottom: 10px;
+    box-shadow: 0px 10px 60px 0px rgba(0, 0, 0, 0.15);
 }
 .users-list .users-list-head {
     background-color: #263238;
-    color: white;
+    color: #fff;
     align-items: center;
     border-radius: 8px;
     padding: 20px;
@@ -30,21 +31,32 @@
 .users-list .users-list-title {
     font-weight: bold;
 }
-.users-list .btn-get-users {
+.users-list .btn-sort-users {
     margin-left: auto;
+    color: #fff;
+}
+.users-list .btn-sort-users:hover {
+    color: #8bc34a;
+}
+.users-list .btn-sort-users:disabled {
+    color: #c7c7c7;
+    cursor: not-allowed;
+}
+.users-list .btn-get-users {
+    margin-left: 15px;
     border-radius: 6px;
-    color: white;
+    color: #fff;
     background-color: #8bc34a;
     height: 32px;
     padding: 0 15px;
     transition: all .2s ease-out;
 }
 .users-list .btn-get-users:hover {
-    color: white;
+    color: #fff;
     background-color: #669e27;
 }
 .users-list .btn-get-users:disabled {
-    color: white;
+    color: #fff;
     background-color: #cacaca;
 }
 .users-list .info-card {
@@ -60,7 +72,7 @@
 }
 .users-list .user-card:hover {
     box-shadow: 0px 10px 14px 0px rgba(216, 216, 216, 0.55);
-    background-color: white;
+    background-color: #fff;
     cursor: pointer;
 }
 .users-list .user-card .user-info {
@@ -73,7 +85,7 @@
     padding: 20px;
     padding-right: 70px;
     box-shadow: 0px 10px 30px 0px rgba(0, 0, 0, 0.3);
-    color: white;
+    color: #fff;
     transition: all .2s ease-out;
     min-width: 300px;
     white-space: nowrap;
