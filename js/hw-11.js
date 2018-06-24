@@ -65,7 +65,8 @@ let secureText = new SecureString('Whats up, Doc ?');
 
 
 // 3)
-function StringControl(str) {
+// ES5
+function StringControlES5(str) {
     let string = str;
     // Методы для получения текущей строки
     this.getString = this.toString = () => string;
@@ -75,4 +76,33 @@ function StringControl(str) {
     this.getStringLength = this.valueOf = () => string.length;
 }
 
-let text = new StringControl('Hello! I am a sad string :(');
+let text = new StringControlES5('Hello! I am a sad string :(');
+
+// ES6
+class StringControlES6 {
+    constructor(str) {
+        this.string = str;
+    }
+
+    setNewString(str) {
+        this.string = str;
+    }
+
+    getString() {
+        return this.string;
+    }
+
+    toString() {
+        return this.getString();
+    }
+
+    getStringLength() {
+        return this.string.length;
+    }
+
+    valueOf() {
+        return this.getStringLength();
+    }
+}
+
+let text2 = new StringControlES6('Hello! I am a sad string to :(');
