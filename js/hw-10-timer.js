@@ -58,25 +58,25 @@ const Timer = (function () {
     }
 
     // Show timer left
-    function displayTimeLeft(seconds) {
-        // Get UTC date
-        let date = new Date(seconds * 1000),
-            dateDays = date.getUTCDate() - 1,
-            dateHours = date.getUTCHours(),
-            dateMinutes = date.getUTCMinutes(),
-            dateSeconds = date.getUTCSeconds(),
+    function displayTimeLeft(sec) {
+        // Get days, hours, minutes and seconds
+        let milisec = (sec * 1000),
+            days = Math.floor(milisec / (1000 * 60 * 60 * 24)),
+            hours = Math.floor((milisec % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+            minutes = Math.floor((milisec % (1000 * 60 * 60)) / (1000 * 60)),
+            seconds = Math.floor((milisec % (1000 * 60)) / 1000);
 
         // Format 2-digits
-            formatDays = (dateDays < 10) ? '0' + dateDays + ':' : dateDays + ':',
-            formatHours = (dateHours < 10) ? '0' + dateHours + ':' : dateHours + ':',
-            formatMinutes = (dateMinutes < 10) ? '0' + dateMinutes : dateMinutes,
-            formatSeconds = (dateSeconds < 10) ? '0' + dateSeconds : dateSeconds;
+            days = (days < 10) ? '0' + days + ':' : days + ':';
+            hours = (hours < 10) ? '0' + hours + ':' : hours + ':';
+            minutes = (minutes < 10) ? '0' + minutes : minutes;
+            seconds = (seconds < 10) ? '0' + seconds : seconds;
 
         // Check formatDays and formatHours, if formatDays != 00 and formatHours = 00 show days and hours together
-        if (formatDays !== '00:' && formatHours === '00:') formatDays = formatDays + formatHours;
+        if (days !== '00:' && hours === '00:') days = days + hours;
             
         // Format final string
-        let time = `${(formatDays !== '00:') ? formatDays : ''}${(formatHours !== '00:') ? formatHours : ''}${formatMinutes}:${formatSeconds}`;
+        let time = `${(days !== '00:') ? days : ''}${(hours !== '00:') ? hours : ''}${minutes}:${seconds}`;
 
         // Display final string
         timeLeftElement.innerText = time;
