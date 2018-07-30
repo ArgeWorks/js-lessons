@@ -67,8 +67,9 @@ btnGetUsers.addEventListener('click', function (e) {
             btnSortUsers.disabled = true;
             return;
         }
-        // Parse result
-        usersArr = JSON.parse(res);
+        
+        usersArr = res;
+
         // Users count
         if (usersArr.length) {
             // Clear users list

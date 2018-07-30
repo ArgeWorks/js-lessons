@@ -406,7 +406,7 @@ const myFunc = function someFunc () {
 //--------------------------
 // САМОВЫЗЫВАЮЩАЯСЯ ФУНКЦИЯ - IMMEDIATELY-INVOKED FUNCTION EXPRESSION (IIFE) или SELF-INVOKING FUNCTION EXPRESSION.
 // выполняется автоматически, когда до нее доходит интерпритатор.
-
+(function () {}());
 (function (str) {
     // Private region:               // Этот код не доступен из вне
     let someNub = 22;
@@ -429,6 +429,7 @@ const myFunc = function someFunc () {
 
 //--------------------------
 // СТРЕЛОЧНЫЕ ФУНКЦИИ - ARROW FUNCTION
+// Больше о стрелочных функциях тут - https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Functions/Arrow_functions
 
 let sum = (a, b) => {
     return a + b;
@@ -517,6 +518,48 @@ const counter = (function () {
         counterPlusOne: counterPlusOne
     }
 }());
+
+//////////////////////////////////////////////////////////// Sigleton ////////////////////////////////////////////////////////////
+
+
+const userInfo = (function () {
+    let user = {};
+    let instance;
+
+    function getUser() {
+        return user;
+    }
+
+    function setUserName(name) {
+        user.name = name;
+    }
+
+    function getUserName() {
+        return user.name;
+    }
+
+    function crateInstance() {
+        return {
+            getUser,
+            setUserName,
+            getUserName
+        }
+    }
+
+    return {
+        getInstance() {
+            return instance || (instance = crateInstance());
+        }
+    }
+})();
+
+const user1 = userInfo.getInstance();
+user1.setUserName('Igor');
+
+const user2 = userInfo.getInstance();
+
+console.log(user1.getUserName); // 'Igor'
+console.log(user2.getUserName); // 'Igor'
 
 //////////////////////////////////////////////////////////// ЗАМЫКАНИЕ - ЛЕКСИЧЕСКОЕ ОКРУЖЕНИЕ (LEXICAL ENVIRONMENT) ////////////////////////////////////////////////////////////
 
@@ -1604,6 +1647,13 @@ var toggleNav = function () {
 };
 nav.addEventListener('click', toggleNav, false);
 
+// 4) Стрелочные функции не создают собственный контекст this, а используют значение this окружающего контекста
+var nav = document.querySelector('.nav'); // <nav class="nav">
+var toggleNav = () => {
+    console.log(this); // this = глобальное, [объект Window]
+};
+nav.addEventListener('click', toggleNav, false);
+
 //---------
 
 // Встречаются и проблемы со значением this.В следующем примере внутри одной и той же функции значение и ОВ могут меняться:
@@ -1640,20 +1690,20 @@ for (var i = 0; i < links.length; i++) {
 }
 // Значение this не относится к перебираемым элементам, мы ничего не вызываем и не меняем ОВ. Давайте посмотрим, как мы можем менять ОВ (точнее, мы меняем контекст вызова функций).
 
-// Методы .call() и .apply() позволяют передавать ОВ в функцию:
+// Методы .call() и .apply() определяют в каком контексте(ОВ) должна быть вызвана функция:
 var links = document.querySelectorAll('nav li');
 for (var i = 0; i < links.length; i++) {
     (function () {
         console.log(this);
     }).call(links[i]);
 }
-// В результате в this передаются значения перебираемых элементов. Метод.call(scope, arg1, arg2, arg3) принимает список аргументов, разделённых запятыми, а метод.apply(scope, [arg1, arg2]) принимает массив аргументов.
+// В результате в this передаются значения перебираемых элементов. 
+// Метод.call(scope, arg1, arg2, arg3) принимает список аргументов, разделённых запятыми.
+// Метод.apply(scope, [arg1, arg2]) принимает массив аргументов.
 
-// Важно помнить, что методы.call() или.apply() вызывают функции, поэтому вместо
+// Важно помнить, что методы.call() и.apply() вызывают функции
 myFunction(); // вызывает myFunction
-
-//позвольте.call() вызвать функцию и передать параметр:
-myFunction.call(scope);
+myFunction.call(scope); // вызывает myFunction с переданной ОВ
 
 
 // .bind() не вызывает функцию, а просто привязывает значения переменных (контекст) перед её вызовом. Как вы знаете, мы не можем передавать параметры в ссылки на функции:
@@ -1818,63 +1868,383 @@ var Module = (function () {
 // 3 - Функция запускается
 // 4 - Функция возвращает this (даже если нет return), но, если в return указать другой объект, то будет возвращен он, если же в return будет другой тип данных, то он будет проигнорирован.
 
-function User(name) {
-    this.name = name;
-    this.getName = function () {
-        return this.name;
+function User(firstName, lastName) {
+    let private = "Secret" // Приватная переменная, к ней нет прямого доступа, но можно получить доступ с помощью методов.
+
+    this.firstName = firstName;
+    this.lastName = lastName;
+
+    this.greeting = function () {
+        return `Hello there ${this.firstName} ${this.lastName}`;
+    }
+
+    this.getSecret = function () {
+        return private;
     }
 }
 
-let person = new User('Igor');
-person.getName(); // 'Igor'
+// Создаем экземпляр класса User
+let person = new User('Igor', 'Argunov');
 
-//---------
+person.greeting(); // 'Hello there Igor Argunov'
+
+// Узнаем является ли экземпляр класса определенным классом
+person instanceof User;  // true
+[] instanceof Array; // true
+
+//------------------------------------
 
 function UserItems(name, items) {
     this.name = name;
     this.items = items;
+
     this.getItems = function () {
         for (let item of items) {
-            console.log(this.name + ' have a ' + this.item);
+            console.log(this.name + ' have a ' + item);
         }
     }
 }
 
+// Создаем экземпляр класса UserItems
 let personItems = new UserItems('Igor', ['Googles', 'Ford Mustang', 'Umbrella']);
+
 personItems.getItems(); // Igor have a Googles, Igor have a Ford Mustang, Igor have a Umbrella.
 
+//------------------------------------
+// ECMAScript 5 (ES5) Наследование (Вызов конструктора родителя)
 
+function User(firstName, lastName) {
+    this.firstName = firstName;
+    this.lastName = lastName;
 
-// ECMAScript 6 (ES6)
-// Классы определяются в ECMAScript 6(ES6) следующим образом:
-
-class Point {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-    toString() {
-        return '(' + this.x + ', ' + this.y + ')';
+    this.greeting = function () {
+        return `Hello there ${this.firstName} ${this.lastName}`;
     }
 }
 
-var p = new Point(25, 8);
-p.toString() // '(25, 8)'
+function Customer(firstName, lastName, phone, membership) {
+    // Такой вызов запустит функцию User в контексте текущего объекта, со всеми аргументами, она выполнится и запишет в this всё, что было в User
+    User.call(this, firstName, lastName); 
+    // this(объект Customer) передается в User, там в него производятся записи с помощью this.firstName и т.д. и после этого, уже тут в this(все тот же объект Customer) уже доступны все свойства и методы из User.
+
+    this.phone = phone;
+    this.membership = membership;
+
+    // Если хотим переопределить унаследованный метод greeting
+    this.greeting = function () {
+        return `Hello there ${this.firstName} ${this.lastName}, have a nice day!`;
+    }
+    // Но мы все еще можем обратиться к методу greeting родителя вот так - User.greeting();
+}
+
+let person = new User('Igor', 'Argunov');
+let customer = new Customer('Igor', 'Argunov', '0632609750', 'Standard');
+
+console.log(person);
+console.log(customer);
+
+// В чем минус такого подхода, при создании нескольких экземпляров классов User или Customer у каждого будет создаваться один и тот же метод greeting и занимать лишнюю память.
+// Но учлше было бы создать один общедоступный метод или свойство для всех потомком класса с помощью прототипного наследования.
+
+// ECMAScript 5 (ES5) Наследование (Prototype)
+// У каждого объекта класса есть внутренний объект prototype в который можно записывать методы, которые будут доступны потомкам.
+// Все что имеет родитель, будет доступно и потомку, но не на оборот.
+// В каждом объекте prototype храниться свойство constructor, когда мы наследуем прототип родителя то мы перезаписываем prototype и соответственно constructor стирается, считается правильным его возвращать - Customer.prototype.constructor = Customer;
+// Небольшой минус прототипа в том, что с помощью него нельзя будет получить доступ к приватным переменным
+
+function User(firstName, lastName) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+}
+User.prototype.greeting = function () {
+    return `Hello there ${this.firstName} ${this.lastName}`;
+}
+
+function Customer(firstName, lastName, phone, membership) {
+    User.call(this, firstName, lastName);
+    this.phone = phone;
+    this.membership = membership;
+}
+Customer.prototype = Object.create(User.prototype);
+Customer.prototype.constructor = Customer;
+
+let person = new User('Igor', 'Argunov');
+let сustomer = new Customer('Igor', 'Argunov', '0632609750', 'Standart');
+
+// При вызове метода greeting он будет искаться сначала в самом объекте, потом в его прототипе, если не находит то ищет его у прототипа своего родителя и так далее.
+console.log(person.greeting());
+console.log(сustomer.greeting());
+
+
+//------------------------------------
+// ECMAScript 6 (ES6)
+// Классы определяются в ECMAScript 6(ES6) следующим образом:
+
+class User {
+    // метод constructor не обязательный, но если он есть, то он выполниться автоматически при инициализации экземпляра класса. 
+    constructor(firstName, lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    
+    // Методы в классах es6 сразу же записываются в prototype
+    greeting() {
+        return `Hello there ${this.firstName} ${this.lastName}`;
+    }
+}
+
+// Наследование - при объявлении класса который будет наследовать другой класс нужно указать ключевое слово extends ИмяКласса который нужно наследовать.
+class Customer extends User {
+    constructor(firstName, lastName, phone, membership) {
+        // Обращаемся к классу User с помощью ключевого слова super
+        super(firstName, lastName); // Аналог User.call(this, firstName, lastName);
+        
+        // При помощи super можно вызывать методы из родительского класса
+        // Пример использования: мы переназначаем метод greeting из родителя
+        // greeting() { 
+        //    return `Hello there ${this.firstName} ${this.lastName}, have a nice day!`; 
+        // }
+        // но с помощью super у нас все еще есть возможность обратиться к методу greeting из родительского класса User
+        // super.greeting();
+
+        this.phone = phone;
+        this.membership = membership;
+    }
+}
+
+let person = new User('Igor', 'Argunov');
+let сustomer = new Customer('Igor', 'Argunov', '0632609750', 'Standart');
+person.greeting()    // 'Hello there Igor Argunov'
+сustomer.greeting()  // 'Hello there Igor Argunov'
 
 // По факту, результатом создания такого класса будет функция:
-
-//> typeof Point
-//'function'
+// typeof Point
+// 'function'
 
 //Однако, вы можете вызывать класс только через new:
+User(); // TypeError: Classes can’t be function-called
 
-Point()
-// TypeError: Classes can’t be function-called
-
+//------------------------------------
 //В отличие от функций, определения классов не поднимаются. Таким образом, класс существует только после того, как его определение было достигнуто и выполнено. Попытка создания класса до этого момента приведет к «ReferenceError»:
-
 new Foo(); // ReferenceError
 class Foo { }
+
+// Так же в конструкторе можно делать приватные переменные, но доступ к ним есть только внутри самого конструктора
+class User {
+    constructor(firstName, lastName) {
+        let privatProperty = 'private'; // Эту переменную видно только внутри метода constructor
+        this.public = privatProperty;
+    }
+
+    greeting() {
+        return privatProperty;
+    }
+}
+
+let person = new User('Igor', Argunov);
+person.greeting(); // Error privatProperty is undefined
+
+//------------------------------------
+
+
+//////////////////////////////////////////////////////////// JSON ////////////////////////////////////////////////////////////
+// Объекты в формате JSON похожи на обычные JavaScript-объекты, но отличаются от них более строгими требованиями к строкам – они должны быть именно в двойных кавычках.
+// Кроме того, в формате JSON не поддерживаются комментарии. Он предназначен только для передачи данных.
+
+// Данные в формате JSON(RFC 4627) представляют собой:
+// JavaScript - объекты { ... }
+// Массивы [...]
+// "строки в двойных кавычках"
+// число
+// логическое значение true / false
+// null
+
+// Основные методы для работы с JSON в JavaScript– это:
+// JSON.parse – читает объекты из строки в формате JSON.
+// JSON.stringify – превращает объекты в строку в формате JSON, используется, когда нужно из JavaScript передать данные по сети.
+
+
+// ДЕСЕРИАЛИЗАЦИЯ (ПАРСИМ JSON СТРОКУ)
+let user = '{ "name": "Вася", "age": 35, "isAdmin": false, "friends": [0,1,2,3] }';
+user = JSON.parse(user); // object { ... }
+
+// УМНЫЙ РАЗБОР JSON СТРОКИ
+// Например, мы получили с сервера объект с данными события event.
+var str = '{"title":"Конференция","date":"2014-11-30T12:00:00.000Z"}';
+var event = JSON.parse(str);
+alert(event.date.getDate()); // ошибка!
+// Дело в том, что значением event.date является строка, а отнюдь не объект Date. Откуда методу JSON.parse знать, что нужно превратить строку именно в дату?
+
+// Для интеллектуального восстановления из строки у JSON.parse(str, reviver) есть второй параметр reviver, который является коллбек функцией - function (key, value).
+// Если она указана, то в процессе чтения объекта из строки JSON.parse передаёт ей по очереди все создаваемые пары ключ-значение и может возвратить либо преобразованное значение, либо undefined, если его нужно пропустить.
+var event = JSON.parse(str, function (key, value) {
+    if (key == 'date') return new Date(value);
+    return value;
+});
+
+alert(event.date.getDate()); // теперь сработает!
+// Кстати, эта возможность работает и для вложенных объектов тоже
+
+
+// СЕРИАЛИЗАЦИЯ (ПРЕОБРАЗОВАНИЕ ДАННЫХ В JSON СТРОКУ)
+var event = {
+    title: "Конференция",
+    date: "сегодня"
+};
+
+var str = JSON.stringify(event);
+alert(str); // "{"title":"Конференция","date":"сегодня"}"
+
+// ИСКЛЮЧЕНИЕ СВОЙСТВ
+// Во втором параметре JSON.stringify(value, replacer) можно указать массив свойств, которые подлежат сериализации.
+
+var user = {
+    name: "Вася",
+    age: 25,
+    window: window
+};
+
+alert(JSON.stringify(user, ["name", "age"]));
+// {"name":"Вася","age":25}
+
+// Для более сложных ситуаций вторым параметром можно передать функцию function(key, value), которая возвращает сериализованное value либо undefined, если его не нужно включать в результат:
+var user = {
+    name: "Вася",
+    age: 25,
+    window: window
+};
+
+var str = JSON.stringify(user, function (key, value) {
+    if (key == 'window') return undefined;
+    return value;
+});
+
+alert(str); // {"name":"Вася","age":25}
+// В примере выше функция пропустит свойство с названием window.Для остальных она просто возвращает значение, передавая его стандартному алгоритму.А могла бы и как - то обработать.
+// Функция replacer работает рекурсивно, то есть, если объект содержит вложенные объекты, массивы и т.п., то все они пройдут через replacer.
+
+// КРАСИВОЕ ФОРМАТИРОВАНИЕ
+// В методе JSON.stringify(value, replacer, space) есть ещё третий параметр space.
+// Если он является числом – то уровни вложенности в JSON оформляются указанным количеством пробелов, если строкой – вставляется эта строка.
+
+var user = {
+    name: "Вася",
+    age: 25,
+    roles: {
+        isAdmin: false,
+        isEditor: true
+    }
+};
+
+var str = JSON.stringify(user, "", 4);
+
+alert(str);
+/* Результат -- красиво сериализованный объект:
+{
+    "name": "Вася",
+    "age": 25,
+    "roles": {
+        "isAdmin": false,
+        "isEditor": true
+    }
+}
+*/
+
+// Доволнительная иформация https://learn.javascript.ru/json
+
+
+//////////////////////////////////////////////////////////// Ajax ////////////////////////////////////////////////////////////
+// Асинхронное общение с сервером без перезагрузки страницы
+// В панели разработчиков тип xhr - это ajax запрос
+// Список статус кодов https://ru.wikipedia.org/wiki/Список_кодов_состояния_HTTP
+
+// Get запрос служит для получения данных, при этом никакие данные не передаются
+// Post запрос это отправка данных на сервер
+// Put обычно используется для обновления уже существующих данных
+// Delete для удаления данных с сервера
+
+// ES5
+// Создаем экземпляр класса XMLHttpRequest
+let xhr = new XMLHttpRequest();
+
+// Настройки запроса (3-й аргумент async = по умолчанию true, если поставить false то при запросе страница будет вешаться и ждать ответа)
+xhr.open("GET", "https://jsonplaceholder.typicode.com/users");
+
+// Для передачи данных на сервер в виде json нужно указывать заголовки
+xhr.setRequestHeader("Content-type", "application/json");
+
+// Отправляем запрос (если надо передать данные на сервер, то передаем в скобки json объект, если же нет, оставляем пустыми)
+xhr.send();
+
+// Ответ от сервера (содержимое появляется не сразу)
+xhr.responseText;
+
+// Отслеживаем состояние (Старый вариант).
+// Виды состояний: 
+// 0 (UNSENT)            - Объект был создан. Метод open() ещё не вызывался
+// 1 (OPENED)            - Метод open() был вызван.
+// 2 (HEADERS_RECEIVED)  - Метод send() был вызван, доступны заголовки (headers) и статус.
+// 3 (LOADING)           - Загрузка; responseText содержит частичные данные.
+// 4 (DONE)              - Операция полностью завершена.
+xhr.addEventListener('readystatechange', () => {
+    if (xhr.readyState === 3) {
+        console.log('Loading...');
+    }
+    if (xhr.readyState === 4) {
+        console.log('Loading done! Response:');
+        let response = JSON.parse(xhr.responseText);
+        console.log(response);
+    }
+});
+
+// Отслеживаем состояние когда общение с сервером полностью звершено. (Более новый вариант).
+// Так же есть и другие события, подробнее тут - https://learn.javascript.ru/xhr-onprogress
+xhr.addEventListener('load', () => {
+    // После завершения общения нужно проверять статус
+    if (xhr.status === 200) {
+        console.log('Loading done! Response:');
+        let response = JSON.parse(xhr.responseText);
+        console.log(response);
+    } else {
+        console.log('Error: ' + xhr.status);
+    }
+});
+
+
+//////////////////////////////////////////////////////////// Promise ////////////////////////////////////////////////////////////
+
+// Promise создаются путем вызова new Promise с одной функцией в качестве аргумента.
+let promise = new Promise(function () {});
+// Вызов new Promise немедленно вызовет функцию, переданную в качестве аргумента. 
+// Цель этой функции состоит в информировании объекта Promise, когда событие, с которым он связан, будет завершено.
+
+// Для того, чтобы сделать это, функция, которую вы передаете в конструктор, может принимать два параметра, которые сами являются функциями — resolve и reject. 
+// Вызов resolve(value) пометит обещание как успешно завершенное и вызовет обработчик успешного завершения (.then)
+// Вызов reject(error) вызовет обработчик неуспешного завершения (.catch) 
+// Нельзя вызывать обе эти функции одновременно. 
+// Функции resolve и reject обе принимают один аргумент, который содержит в себе данные о событии.
+
+function get(url) {
+    return new Promise((resolve, reject) => {
+        // Создаем экземпляр класса XMLHttpRequest
+        const http = new XMLHttpRequest();
+
+        // Вешаем слушатель события при завершении общения с сервером
+        http.addEventListener('load', () => {
+            // Если статус ответа 200 возвращаем ответ в resolve (then)
+            if (http.status === 200) resolve(http.responseText);
+            // Если получаем ошибку, возвращаем ее в reject (catch)
+            else reject(`Error: ${http.status}`);
+        });
+
+        http.open("GET", url);
+        http.send();
+    });
+}
+
+get('http://google.com')
+    .then(respone => 'Get отработал успешно, ответ: ' + respone)
+    .catch(error => 'Произошла ошибка: ' + error);
 
 
 
