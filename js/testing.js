@@ -136,3 +136,25 @@ http.get("https://jsonplaceholder.typicode.com/posts")
 //     .catch(err => {
 //         console.log(err);
 //     });
+
+
+
+;(function ($) {
+    class Modal {
+        constructor(element, options) {
+
+        }
+
+        init() {
+
+        }
+    }
+
+    $.fn.easyModal = function (options) {
+        new Modal(this, options).init();
+    }
+}(jQuery));
+
+$('myModal').easyModal({
+    'display': 'none'
+});
